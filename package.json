@@ -9,7 +9,12 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "prepare": "husky",
-    "lint:format": "npx --no-install lint-staged && npx --no-install pretty-quick --staged"
+    "lint:format": "npx --no-install lint-staged && npx --no-install pretty-quick --staged",
+    "upload:s3": "sls client deploy --no-config-change --no-policy-change --no-cors-change --no-confirm",
+    "invalidateCache": "sls invalidateCloudFrontCache",
+    "deploy": "npm run build & npm run upload:s3 & npm run invalidateCache",
+    "cloudformation:setup": "sls deploy",
+    "cloudformation:remove": "sls remove"
   },
   "private": true,
   "dependencies": {
@@ -25,6 +30,9 @@
     "@angular/router": "^17.2.4",
     "bootstrap": "^5.3.3",
     "rxjs": "^7.8.0",
+    "serverless": "^3.38.0",
+    "serverless-finch": "^4.0.4",
+    "serverless-s3-cleaner": "^2.0.2",
     "tslib": "^2.5.0",
     "zone.js": "^0.14.4"
   },
