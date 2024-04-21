@@ -12,7 +12,7 @@ export class ManageProductsService extends ApiService {
   uploadProductsCSV(file: File): Observable<unknown> {
     if (!this.endpointEnabled('import')) {
       console.warn(
-        'Endpoint "import" is disabled. To enable change your environment.ts config'
+        'Endpoint "import" is disabled. To enable change your environment.ts config',
       );
       return EMPTY;
     }
@@ -24,15 +24,18 @@ export class ManageProductsService extends ApiService {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             'Content-Type': 'text/csv',
           },
-        })
-      )
+        }),
+      ),
     );
   }
 
   private getPreSignedUrl(fileName: string): Observable<string> {
     const url = this.getUrl('import', 'import');
-
+    const authorization_token = localStorage.getItem('authorization_token');
     return this.http.get<string>(url, {
+      headers: {
+        Authorization: `Basic ${authorization_token}`,
+      },
       params: {
         name: fileName,
       },
